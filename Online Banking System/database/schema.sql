@@ -1,0 +1,26 @@
+-- SQL schema for Online Banking System (MySQL)
+CREATE DATABASE IF NOT EXISTS online_banking;
+USE online_banking;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'USER'
+);
+
+CREATE TABLE IF NOT EXISTS accounts (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  account_number VARCHAR(100) UNIQUE NOT NULL,
+  balance DECIMAL(19,4) DEFAULT 0,
+  owner_id BIGINT,
+  CONSTRAINT fk_owner FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  from_account VARCHAR(100),
+  to_account VARCHAR(100),
+  amount DECIMAL(19,4),
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
